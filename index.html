@@ -277,39 +277,34 @@
         }
 
         .about-frame {
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    height: 500px; /* Explicitly set height to match original placeholder */
-}
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            aspect-ratio: 3 / 4;
+        }
 
-.profile-image {
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-    max-height: 500px; /* Restrict image to frame's height */
-    object-fit: contain; /* Scales image to fit within frame, preserving aspect ratio */
-    display: block; /* Removes inline spacing */
-}
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
 
-/* Responsive adjustment */
-@media (max-width: 1024px) {
-    .about-frame {
-        height: 400px; /* Adjust height for smaller screens */
-    }
-    .profile-image {
-        max-height: 400px; /* Match adjusted frame height */
-    }
-}
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            .about-frame {
+                aspect-ratio: 3 / 4;
+                max-height: 400px;
+            }
+        }
 
-@media (max-width: 768px) {
-    .about-frame {
-        height: 300px; /* Further adjust for mobile */
-    }
-    .profile-image {
-        max-height: 300px;
-    }
-}
+        @media (max-width: 768px) {
+            .about-frame {
+                aspect-ratio: 3 / 4;
+                max-height: 300px;
+            }
+        }
 
         .about-frame::before {
             content: '';
@@ -322,20 +317,10 @@
             z-index: 2;
         }
 
-        .about-frame::after {
-            content: '';
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            right: -20px;
-            bottom: -20px;
-            border: 1px solid var(--accent);
-            z-index: -1;
-        }
 
         .profile-placeholder {
             width: 100%;
-            height: 500px;
+            aspect-ratio: 3 / 4;
             background: linear-gradient(135deg, #2a2a2a 0%, #333333 100%);
             display: flex;
             align-items: center;
@@ -461,29 +446,6 @@
 
         .portfolio-item:hover .portfolio-thumbnail::before {
             opacity: 0.1;
-        }
-
-        .portfolio-play {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 60px;
-            height: 60px;
-            border: 2px solid var(--accent);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            color: var(--accent);
-            opacity: 0;
-            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .portfolio-item:hover .portfolio-play {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1.1);
         }
 
         .portfolio-info {
@@ -640,63 +602,63 @@
         }
 
         /* Contact Section */
-.contact-content {
-    text-align: center;
-    max-width: 800px;
-    margin: 0 auto;
-    font-family: "SF Mono", "Consolas", monospace;
-}
+        .contact-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            font-family: "SF Mono", "Consolas", monospace;
+        }
 
-.contact-text {
-    font-size: 0.85rem;
-    color: #8b949e; /* GitHub's secondary text color */
-    margin-bottom: 2.5rem;
-    letter-spacing: 0.5px;
-    line-height: 1.6;
-}
+        .contact-text {
+            font-size: 0.85rem;
+            color: #8b949e;
+            margin-bottom: 2.5rem;
+            letter-spacing: 0.5px;
+            line-height: 1.6;
+        }
 
-.contact-info {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
-    margin-top: 3rem;
-}
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
 
-.contact-item {
-    text-align: center;
-    padding: 1.5rem;
-    border: 1px solid #30363d; /* GitHub's border color */
-    border-radius: 6px; /* GitHub's rounded corners */
-    background: #0d1117; /* GitHub's dark background */
-    transition: all 0.3s ease;
-}
+        .contact-item {
+            text-align: center;
+            padding: 1.5rem;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            background: #0d1117;
+            transition: all 0.3s ease;
+        }
 
-.contact-item:hover {
-    background: #161b22; /* Slightly lighter on hover */
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Subtle shadow */
-}
+        .contact-item:hover {
+            background: #161b22;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
 
-.contact-icon {
-    font-size: 1.8rem;
-    margin-bottom: 0.75rem;
-    color: #238636; /* GitHub's green accent */
-}
+        .contact-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.75rem;
+            color: #238636;
+        }
 
-.contact-label {
-    font-size: 0.75rem;
-    color: #238636; /* Green for labels */
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    margin-bottom: 0.75rem;
-}
+        .contact-label {
+            font-size: 0.75rem;
+            color: #238636;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
 
-.contact-value {
-    font-size: 0.85rem;
-    color: #c9d1d9; /* GitHub's primary text color */
-    font-weight: 500;
-    letter-spacing: 0.5px;
-}
+        .contact-value {
+            font-size: 0.85rem;
+            color: #c9d1d9;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
 
         /* Footer */
         footer {
@@ -856,8 +818,8 @@
         <div class="about-grid">
             <div class="about-image-container slide-in-left">
                 <div class="about-frame">
-            <img src="images/img1.jpeg" alt="Afrin's Profile Picture" class="profile-image">
-        </div>
+                    <img src="images/img1.jpeg" alt="Afrin's Profile Picture" class="profile-image">
+                </div>
             </div>
             <div class="about-content slide-in-right">
                 <p>Hey, I’m Afrin — a self-taught video editor with over 3 years of experience crafting visuals that tell stories close to my heart.</p>
@@ -897,7 +859,6 @@ Let’s make something that feels real.</p>
                             <source src="videos/video1.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="portfolio-play">▶</div>
                     </div>
                     <div class="portfolio-info">
                         <div class="portfolio-category">Cars & Bikes</div>
@@ -912,7 +873,6 @@ Let’s make something that feels real.</p>
                             <source src="videos/video2.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="portfolio-play">▶</div>
                     </div>
                     <div class="portfolio-info">
                         <div class="portfolio-category">Cars & Bikes</div>
@@ -932,7 +892,6 @@ Let’s make something that feels real.</p>
                             <source src="videos/clg1.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="portfolio-play">▶</div>
                     </div>
                     <div class="portfolio-info">
                         <div class="portfolio-category">College/NSS</div>
@@ -947,7 +906,6 @@ Let’s make something that feels real.</p>
                             <source src="videos/clg2.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="portfolio-play">▶</div>
                     </div>
                     <div class="portfolio-info">
                         <div class="portfolio-category">College/NSS</div>
@@ -963,7 +921,6 @@ A cinematic walkthrough capturing the essence, energy, and everyday life of an e
                             <source src="videos/clg3.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="portfolio-play">▶</div>
                     </div>
                     <div class="portfolio-info">
                         <div class="portfolio-category">College/NSS</div>
@@ -979,7 +936,6 @@ A dynamic edit showcasing the heart and hype of the college fest.</p>
                             <source src="videos/clg4.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="portfolio-play">▶</div>
                     </div>
                     <div class="portfolio-info">
                         <div class="portfolio-category">College/NSS</div>
@@ -1000,7 +956,6 @@ Honoring the bravery and heart behind every rescue mission.</p>
                             <source src="videos/short.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="portfolio-play">▶</div>
                     </div>
                     <div class="portfolio-info">
                         <div class="portfolio-category">Industrial Visit</div>
@@ -1020,7 +975,6 @@ Honoring the bravery and heart behind every rescue mission.</p>
                             <source src="videos/beach.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="portfolio-play">▶</div>
                     </div>
                     <div class="portfolio-info">
                         <div class="portfolio-category">Beach Edit</div>
@@ -1041,7 +995,6 @@ A serene edit capturing the calm and beauty of the beach.</p>
                             <source src="videos/videox.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="portfolio-play">▶</div>
                     </div>
                     <div class="portfolio-info">
                         <div class="portfolio-category">Travel</div>
@@ -1062,7 +1015,6 @@ Editing life’s highs, lows, and everything in between.</p>
                             <source src="videos/amv1.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="portfolio-play">▶</div>
                     </div>
                     <div class="portfolio-info">
                         <div class="portfolio-category">AMV</div>
@@ -1078,7 +1030,6 @@ A battle reignited — vengeance, strength, and willpower collide in an epic sho
                             <source src="videos/amv2.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="portfolio-play">▶</div>
                     </div>
                     <div class="portfolio-info">
                         <div class="portfolio-category">AMV</div>
@@ -1093,7 +1044,6 @@ A battle reignited — vengeance, strength, and willpower collide in an epic sho
                             <source src="videos/amv3.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
-                        <div class="portfolio-play">▶</div>
                     </div>
                     <div class="portfolio-info">
                         <div class="portfolio-category">AMV</div>
