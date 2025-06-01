@@ -1,0 +1,1294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>阿芙琳 | Afrin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #1e1e1e;
+            --bg-secondary: #2a2a2a;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent: #e6b800;
+            --accent-dark: #cc9900;
+            --border: #3a3a3a;
+            --shadow: rgba(0, 0, 0, 0.3);
+        }
+
+        body {
+            font-family: 'Roboto Mono', monospace;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: all 0.1s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.5;
+            transition: all 0.2s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        a:hover ~ .cursor {
+            width: 30px;
+            height: 30px;
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 3px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(135deg, rgba(30, 30, 30, 0.92) 0%, rgba(58, 58, 58, 0.92) 100%);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+            border-radius: 0 0 15px 15px;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 3rem;
+        }
+
+        .logo {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 3rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 300;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="%23e6b800" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23grid)"/></svg>');
+            animation: gridMove 30s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(40px, 40px); }
+        }
+
+        .hero-content {
+            z-index: 1;
+            position: relative;
+        }
+
+        .hero-japanese {
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1.2s ease 0.3s forwards;
+            letter-spacing: 4px;
+        }
+
+        .hero h1 {
+            font-size: 5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            opacity: 0;
+            animation: fadeInUp 1.2s ease 0.6s forwards;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+        }
+
+        .hero .subtitle {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            margin-bottom: 4rem;
+            opacity: 0;
+            animation: fadeInUp 1.2s ease 0.9s forwards;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .hero-divider {
+            width: 60px;
+            height: 1px;
+            background: var(--accent);
+            margin: 3rem auto;
+            opacity: 0;
+            animation: fadeInUp 1.2s ease 1.2s forwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Sections */
+        .section {
+            padding: 8rem 0;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding-left: 3rem;
+            padding-right: 3rem;
+        }
+
+        .section-header {
+            margin-bottom: 6rem;
+            text-align: center;
+        }
+
+        .section-number {
+            font-size: 0.8rem;
+            color: var(--accent);
+            font-weight: 500;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 300;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .section-divider {
+            width: 40px;
+            height: 1px;
+            background: var(--accent);
+            margin: 0 auto;
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 8rem;
+            align-items: start;
+        }
+
+        .about-image-container {
+            position: relative;
+        }
+
+        .about-frame {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 500px; /* Explicitly set height to match original placeholder */
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 500px; /* Restrict image to frame's height */
+    object-fit: contain; /* Scales image to fit within frame, preserving aspect ratio */
+    display: block; /* Removes inline spacing */
+}
+
+/* Responsive adjustment */
+@media (max-width: 1024px) {
+    .about-frame {
+        height: 400px; /* Adjust height for smaller screens */
+    }
+    .profile-image {
+        max-height: 400px; /* Match adjusted frame height */
+    }
+}
+
+@media (max-width: 768px) {
+    .about-frame {
+        height: 300px; /* Further adjust for mobile */
+    }
+    .profile-image {
+        max-height: 300px;
+    }
+}
+
+        .about-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid var(--border);
+            z-index: 2;
+        }
+
+        .about-frame::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: -20px;
+            bottom: -20px;
+            border: 1px solid var(--accent);
+            z-index: -1;
+        }
+
+        .profile-placeholder {
+            width: 100%;
+            height: 500px;
+            background: linear-gradient(135deg, #2a2a2a 0%, #333333 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .about-content {
+            padding-top: 2rem;
+        }
+
+        .about-content p {
+            margin-bottom: 2.5rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem 0;
+            border: 1px solid var(--border);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Portfolio Section */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+
+        .portfolio-category-header {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 4rem 0 2rem;
+            text-align: left;
+            position: relative;
+        }
+
+        .portfolio-category-header::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 1px;
+            background: var(--accent);
+            margin-top: 0.5rem;
+        }
+
+        .portfolio-item {
+            group: item;
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-10px);
+        }
+
+        .portfolio-thumbnail {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: linear-gradient(135deg, #2a2a2a 0%, #333333 100%);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .portfolio-thumbnail.video-1-1 {
+            aspect-ratio: 1 / 1;
+            width: 300px;
+            height: 300px;
+            max-width: 100%;
+        }
+
+        .portfolio-thumbnail video,
+        .portfolio-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .portfolio-thumbnail::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--accent);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .portfolio-item:hover .portfolio-thumbnail::before {
+            opacity: 0.1;
+        }
+
+        .portfolio-play {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--accent);
+            opacity: 0;
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .portfolio-item:hover .portfolio-play {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .portfolio-info {
+            text-align: left;
+        }
+
+        .portfolio-category {
+            font-size: 0.8rem;
+            color: var(--accent);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .portfolio-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .portfolio-link {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+
+        .portfolio-link:hover {
+            color: var(--accent);
+        }
+
+        .portfolio-description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+            margin-top: 0.5rem;
+        }
+
+        /* Social Section */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .social-item {
+            text-align: center;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .social-item:hover {
+            background: var(--bg-secondary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px var(--shadow);
+        }
+
+        .social-label {
+            font-size: 0.8rem;
+            color: var(--accent);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .social-value {
+            font-size: 1rem;
+            color: var(--text-primary);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-bottom: 1rem;
+        }
+
+        .social-value a {
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+
+        .social-value a:hover {
+            color: var(--accent);
+        }
+
+        .social-image {
+            width: 80px;
+            height: 80px;
+            aspect-ratio: 1 / 1;
+            margin: 0 auto 1rem;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #2a2a2a 0%, #333333 100%);
+        }
+
+        .social-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .social-description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .skill-item {
+            text-align: center;
+            padding: 3rem 2rem;
+            border: 1px solid var(--border);
+            transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .skill-item:hover {
+            background: var(--bg-secondary);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px var(--shadow);
+        }
+
+        .skill-icon {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent);
+        }
+
+        .skill-title {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .skill-description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            letter-spacing: 0.5px;
+        }
+
+        /* Contact Section */
+.contact-content {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: "SF Mono", "Consolas", monospace;
+}
+
+.contact-text {
+    font-size: 0.85rem;
+    color: #8b949e; /* GitHub's secondary text color */
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.5px;
+    line-height: 1.6;
+}
+
+.contact-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+
+.contact-item {
+    text-align: center;
+    padding: 1.5rem;
+    border: 1px solid #30363d; /* GitHub's border color */
+    border-radius: 6px; /* GitHub's rounded corners */
+    background: #0d1117; /* GitHub's dark background */
+    transition: all 0.3s ease;
+}
+
+.contact-item:hover {
+    background: #161b22; /* Slightly lighter on hover */
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Subtle shadow */
+}
+
+.contact-icon {
+    font-size: 1.8rem;
+    margin-bottom: 0.75rem;
+    color: #238636; /* GitHub's green accent */
+}
+
+.contact-label {
+    font-size: 0.75rem;
+    color: #238636; /* Green for labels */
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+}
+
+.contact-value {
+    font-size: 0.85rem;
+    color: #c9d1d9; /* GitHub's primary text color */
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+        /* Footer */
+        footer {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 8rem;
+        }
+
+        .footer-content {
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .nav-container {
+                padding: 1.5rem 2rem;
+            }
+
+            .section {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+                text-align: center;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .portfolio-thumbnail.video-1-1 {
+                width: 100%;
+                height: auto;
+                max-height: 300px;
+            }
+
+            .social-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 3rem;
+                letter-spacing: 4px;
+            }
+
+            .section {
+                padding: 4rem 1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+                letter-spacing: 2px;
+            }
+
+            .cursor, .cursor-trail {
+                display: none;
+            }
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-trail"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">Afrin</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#portfolio">Work</a></li>
+                <li><a href="#social">Social</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-japanese">映像編集者</div>
+            <h1>Afrin</h1>
+            <div class="hero-divider"></div>
+            <p class="subtitle">Video Editor & Visual Storyteller</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section">
+        <div class="section-header fade-in">
+            <div class="section-number">01.</div>
+            <h2 class="section-title">About</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="about-grid">
+            <div class="about-image-container slide-in-left">
+                <div class="about-frame">
+            <img src="images/img1.jpeg" alt="Afrin's Profile Picture" class="profile-image">
+        </div>
+            </div>
+            <div class="about-content slide-in-right">
+                <p>Hey, I’m Afrin — a self-taught video editor with over 3 years of experience crafting visuals that tell stories close to my heart.</p>
+                <p>What started as a hobby quickly turned into a passion. I make videos for myself — edits that reflect what I feel, what I love, and what inspires me. From AMVs to aesthetic beach vibes, and raw cinematic cuts of cars and bikes, each project is a piece of my world.</p>
+                <p>Even though I’ve mostly edited for myself, I’m always open to connecting with like-minded creators. If you have a vision, a vibe, or a story you want to bring to life, let’s talk. Whether it's a shared idea or something experimental — I’m down to explore and create together.
+
+Let’s make something that feels real.</p>
+                <p>Welcome.</p>
+                <div class="about-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">30+</div>
+                        <div class="stat-label">Projects</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">3+</div>
+                        <div class="stat-label">Years</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="section">
+        <div class="section-header fade-in">
+            <div class="section-number">02.</div>
+            <h2 class="section-title">Selected Work</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="portfolio-content">
+            <!-- Cars & Bikes -->
+            <h3 class="portfolio-category-header fade-in">Cars & Bikes</h3>
+            <div class="portfolio-grid">
+                <div class="portfolio-item fade-in">
+                    <div class="portfolio-thumbnail">
+                        <video controls>
+                            <source src="videos/video1.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="portfolio-play">▶</div>
+                    </div>
+                    <div class="portfolio-info">
+                        <div class="portfolio-category">Cars & Bikes</div>
+                        <h3 class="portfolio-title">TUNING ~ code6</h3>
+                        <a href="https://instagram.com/____.afrin.__" target="_blank" class="portfolio-link">View on ____.afrin.__</a>
+                        <p class="portfolio-description">Monochrome. Mechanical grace. A tribute to raw tuning culture.</p>
+                    </div>
+                </div>
+                <div class="portfolio-item fade-in">
+                    <div class="portfolio-thumbnail">
+                        <video controls>
+                            <source src="videos/video2.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="portfolio-play">▶</div>
+                    </div>
+                    <div class="portfolio-info">
+                        <div class="portfolio-category">Cars & Bikes</div>
+                        <h3 class="portfolio-title">Aprillia</h3>
+                        <a href="https://instagram.com/____.afrin.__" target="_blank" class="portfolio-link">View on ____.afrin.__</a>
+                        <p class="portfolio-description">Every engine has a voice. This is how it sounds in cinema.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- College/NSS -->
+            <h3 class="portfolio-category-header fade-in">College/NSS</h3>
+            <div class="portfolio-grid">
+                <div class="portfolio-item fade-in">
+                    <div class="portfolio-thumbnail">
+                        <video controls>
+                            <source src="videos/clg1.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="portfolio-play">▶</div>
+                    </div>
+                    <div class="portfolio-info">
+                        <div class="portfolio-category">College/NSS</div>
+                        <h3 class="portfolio-title">Blood donation</h3>
+                        <a href="https://instagram.com/____.afrin.__" target="_blank" class="portfolio-link">View on ____.afrin.__</a>
+                        <p class="portfolio-description">Every drop counts. A glimpse into moments that save lives.</p>
+                    </div>
+                </div>
+                <div class="portfolio-item fade-in">
+                    <div class="portfolio-thumbnail">
+                        <video controls>
+                            <source src="videos/clg2.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="portfolio-play">▶</div>
+                    </div>
+                    <div class="portfolio-info">
+                        <div class="portfolio-category">College/NSS</div>
+                        <h3 class="portfolio-title">College Campus</h3>
+                        <a href="https://instagram.com/____.afrin.__" target="_blank" class="portfolio-link">View on ____.afrin.__</a>
+                        <p class="portfolio-description">College Campus Tour
+A cinematic walkthrough capturing the essence, energy, and everyday life of an entire college campus.</p>
+                    </div>
+                </div>
+                <div class="portfolio-item fade-in">
+                    <div class="portfolio-thumbnail">
+                        <video controls>
+                            <source src="videos/clg3.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="portfolio-play">▶</div>
+                    </div>
+                    <div class="portfolio-info">
+                        <div class="portfolio-category">College/NSS</div>
+                        <h3 class="portfolio-title">College fest ~ Tejasvi</h3>
+                        <a href="https://instagram.com/____.afrin.__" target="_blank" class="portfolio-link">View on ____.afrin.__</a>
+                        <p class="portfolio-description">The Spirit of Celebration
+A dynamic edit showcasing the heart and hype of the college fest.</p>
+                    </div>
+                </div>
+                <div class="portfolio-item fade-in">
+                    <div class="portfolio-thumbnail">
+                        <video controls>
+                            <source src="videos/clg4.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="portfolio-play">▶</div>
+                    </div>
+                    <div class="portfolio-info">
+                        <div class="portfolio-category">College/NSS</div>
+                        <h3 class="portfolio-title">Unity in Service</h3>
+                        <a href="https://instagram.com/____.afrin.__" target="_blank" class="portfolio-link">View on ____.afrin.__</a>
+                        <p class="portfolio-description">Gratitude in Action
+Honoring the bravery and heart behind every rescue mission.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Industrial Visit -->
+            <h3 class="portfolio-category-header fade-in">Industrial Visit</h3>
+            <div class="portfolio-grid">
+                <div class="portfolio-item fade-in">
+                    <div class="portfolio-thumbnail">
+                        <video controls>
+                            <source src="videos/short.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="portfolio-play">▶</div>
+                    </div>
+                    <div class="portfolio-info">
+                        <div class="portfolio-category">Industrial Visit</div>
+                        <h3 class="portfolio-title">Promo</h3>
+                        <a href="https://instagram.com/____.afrin.__" target="_blank" class="portfolio-link">View on ____.afrin.__</a>
+                        <p class="portfolio-description">A short video documenting an promo for industrial visit, blending narration with engaging visuals.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Beach Edit -->
+            <h3 class="portfolio-category-header fade-in">Beach Edit</h3>
+            <div class="portfolio-grid">
+                <div class="portfolio-item fade-in">
+                    <div class="portfolio-thumbnail">
+                        <video controls>
+                            <source src="videos/beach.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="portfolio-play">▶</div>
+                    </div>
+                    <div class="portfolio-info">
+                        <div class="portfolio-category">Beach Edit</div>
+                        <h3 class="portfolio-title">waves</h3>
+                        <a href="https://instagram.com/____.afrin.__" target="_blank" class="portfolio-link">View on ____.afrin.__</a>
+                        <p class="portfolio-description">Waves & Wonders
+A serene edit capturing the calm and beauty of the beach.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Travel -->
+            <h3 class="portfolio-category-header fade-in">Travel</h3>
+            <div class="portfolio-grid">
+                <div class="portfolio-item fade-in">
+                    <div class="portfolio-thumbnail video-1-1">
+                        <video controls>
+                            <source src="videos/videox.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="portfolio-play">▶</div>
+                    </div>
+                    <div class="portfolio-info">
+                        <div class="portfolio-category">Travel</div>
+                        <h3 class="portfolio-title">Wanderlust Woven</h3>
+                        <a href="https://instagram.com/____.afrin.__" target="_blank" class="portfolio-link">View on ____.afrin.__</a>
+                        <p class="portfolio-description">Moments That Matter
+Editing life’s highs, lows, and everything in between.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AMV -->
+            <h3 class="portfolio-category-header fade-in">AMV</h3>
+            <div class="portfolio-grid">
+                <div class="portfolio-item fade-in">
+                    <div class="portfolio-thumbnail">
+                        <video controls>
+                            <source src="videos/amv1.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="portfolio-play">▶</div>
+                    </div>
+                    <div class="portfolio-info">
+                        <div class="portfolio-category">AMV</div>
+                        <h3 class="portfolio-title">ONE PIECE</h3>
+                        <a href="https://instagram.com/tenkai.cc" target="_blank" class="portfolio-link">View on tenkai.cc</a>
+                        <p class="portfolio-description">Luffy vs. Lucci, Round 2
+A battle reignited — vengeance, strength, and willpower collide in an epic showdown.</p>
+                    </div>
+                </div>
+                <div class="portfolio-item fade-in">
+                    <div class="portfolio-thumbnail">
+                        <video controls>
+                            <source src="videos/amv2.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="portfolio-play">▶</div>
+                    </div>
+                    <div class="portfolio-info">
+                        <div class="portfolio-category">AMV</div>
+                        <h3 class="portfolio-title">JJK</h3>
+                        <a href="https://instagram.com/tenkai.cc" target="_blank" class="portfolio-link">View on tenkai.cc</a>
+                        <p class="portfolio-description">Toji’s lethal precision and fierce resolve captured in cinematic detail.</p>
+                    </div>
+                </div>
+                <div class="portfolio-item fade-in">
+                    <div class="portfolio-thumbnail">
+                        <video controls>
+                            <source src="videos/amv3.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="portfolio-play">▶</div>
+                    </div>
+                    <div class="portfolio-info">
+                        <div class="portfolio-category">AMV</div>
+                        <h3 class="portfolio-title">HAIKYUU</h3>
+                        <a href="https://instagram.com/tenkai.cc" target="_blank" class="portfolio-link">View on tenkai.cc</a>
+                        <p class="portfolio-description">Passion & Power
+Rise Above the Net
+Every serve, spike, and block told through cinematic editing.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Social Section -->
+    <section id="social" class="section">
+        <div class="section-header fade-in">
+            <div class="section-number">03.</div>
+            <h2 class="section-title">Social</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="social-content">
+            <div class="social-grid">
+                <div class="social-item fade-in">
+                    <div class="social-label">Instagram</div>
+                    <div class="social-value"><a href="https://instagram.com/tenkai.cc" target="_blank">@tenkai.cc</a></div>
+                    <div class="social-image">
+                        <img src="images/img3.jpeg" alt="tenkai.cc Profile Picture">
+                    </div>
+                    <p class="social-description">Check out my AMV edits blending anime with dynamic music. Follow for creative storytelling!</p>
+                </div>
+                <div class="social-item fade-in">
+                    <div class="social-label">Instagram</div>
+                    <div class="social-value"><a href="https://instagram.com/____.afrin.__" target="_blank">@____.afrin.__</a></div>
+                    <div class="social-image">
+                        <img src="images/img2.jpeg" alt="____.afrin.__ Profile Picture">
+                    </div>
+                    <p class="social-description">Explore my video editing portfolio, from commercials to documentaries. Follow for updates!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section">
+        <div class="section-header fade-in">
+            <div class="section-number">04.</div>
+            <h2 class="section-title">Skills</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="skills-grid">
+            <div class="skill-item fade-in">
+                <div class="skill-icon">✂</div>
+                <h3 class="skill-title">Editing</h3>
+                <p class="skill-description">Crafting narratives with precise cuts and seamless flow.</p>
+            </div>
+            <div class="skill-item fade-in">
+                <div class="skill-icon">🎨</div>
+                <h3 class="skill-title">Color Grading</h3>
+                <p class="skill-description">Enhancing mood with sophisticated color techniques.</p>
+            </div>
+            <div class="skill-item fade-in">
+                <div class="skill-icon">♪</div>
+                <h3 class="skill-title">Sound Design</h3>
+                <p class="skill-description">Creating immersive audio experiences.</p>
+            </div>
+            <div class="skill-item fade-in">
+                <div class="skill-icon">✨</div>
+                <h3 class="skill-title">Motion Graphics</h3>
+                <p class="skill-description">Adding subtle effects to elevate storytelling.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div class="section-header fade-in">
+            <div class="section-number">05.</div>
+            <h2 class="section-title">Contact</h2>
+            <div class="section-divider"></div>
+        </div>
+        <div class="contact-content">
+            <p class="contact-text fade-in">Let's create something extraordinary together. Reach out to discuss your next project!</p>
+            <div class="contact-info">
+                <div class="contact-item fade-in">
+                    <div class="contact-icon">✉</div>
+                    <div class="contact-label">Email</div>
+                    <div class="contact-value">afrinz2004@gmail.com</div>
+                </div>
+                <div class="contact-item fade-in">
+                    <div class="contact-icon">📞</div>
+                    <div class="contact-label">Phone</div>
+                    <div class="contact-value">+91 9645756332</div>
+                </div>
+                <div class="contact-item fade-in">
+                    <div class="contact-icon">📍</div>
+                    <div class="contact-label">Location</div>
+                    <div class="contact-value">Kerala, India</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            © 2025 Afrin — Crafted with intention
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Enhanced scroll animations
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -80px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Enhanced navigation background
+        let lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY > 100) {
+                nav.style.background = 'linear-gradient(135deg, rgba(30, 30, 30, 0.96) 0%, rgba(58, 58, 58, 0.96) 100%)';
+                nav.style.borderBottom = '1px solid rgba(58, 58, 58, 0.8)';
+            } else {
+                nav.style.background = 'linear-gradient(135deg, rgba(30, 30, 30, 0.92) 0%, rgba(58, 58, 58, 0.92) 100%)';
+                nav.style.borderBottom = '1px solid var(--border)';
+            }
+            
+            lastScrollY = currentScrollY;
+        });
+
+        // Parallax effect for hero background
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const hero = document.querySelector('.hero');
+            if (hero) {
+                hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+            }
+        });
+
+        // Custom cursor movement
+        const cursor = document.querySelector('.cursor');
+        const cursorTrail = document.querySelector('.cursor-trail');
+        let mouseX = 0;
+        let mouseY = 0;
+        let trailX = 0;
+        let trailY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursor.style.left = mouseX + 'px';
+            cursor.style.top = mouseY + 'px';
+        });
+
+        function animateTrail() {
+            trailX += (mouseX - trailX) * 0.2;
+            trailY += (mouseY - trailY) * 0.2;
+            cursorTrail.style.left = trailX + 'px';
+            cursorTrail.style.top = trailY + 'px';
+            requestAnimationFrame(animateTrail);
+        }
+
+        requestAnimationFrame(animateTrail);
+    </script>
+</body>
+</html>
